@@ -3,7 +3,8 @@ import React, {useEffect, useState, useRef} from 'react';
 const RadialTS = function({options}) {
   const [coords, setCoords] = useState([]);
   const [points, setPoints] = useState([]);
-  const [unit, setUnit] = useState(0);
+  const [display, setDisplay] = useState('');
+  const unit = useRef(0);
   const count = useRef(0);
 
   const {
@@ -13,6 +14,7 @@ const RadialTS = function({options}) {
     opacity,
     animated,
     throttle,
+    showVal,
     center = { x: window.innerWidth / 2, y: window.innerHeight / 2 },
     skip   = 1,
     chunk  = 1,
@@ -38,7 +40,7 @@ const RadialTS = function({options}) {
 
       cycle.map(function(entry, i) {
         if (Math.floor(i/skip) === i/skip) {
-          entry && coords.push({year: Number(key), entry: calculateCoordinates(i/skip, Math.floor(cycle.length/skip), entry, yMin)});
+          entry && coords.push({year: Number(key), value: entry, entry: calculateCoordinates(i/skip, Math.floor(cycle.length/skip), entry, yMin)});
         }
       });
     }
@@ -53,7 +55,7 @@ const RadialTS = function({options}) {
       let style = {
         top: point.entry.y,
         left: point.entry.x,
-        opacity: opacity ? sigFigs((i + 1)/(points.length), 2) : 1
+        opacity: opacity ? sigFigs((i + 1)/(points.length), 3) : 1
       };
 
       rendered.push(<div key={i} className='point circle' style={style}/>);
@@ -71,8 +73,11 @@ const RadialTS = function({options}) {
     if (count.current < coords.length) {
       setPoints(coords.slice(0, count.current));
 
-      if (coords[count.current][unitName] > unit) {
-        setUnit(coords[count.current][unitName]);
+      if (unit.current !== coords[count.current][unitName]) {
+        var string = `${coords[count.current].value}`;
+
+        showVal && setDisplay(string);
+        unit.current = coords[count.current][unitName];
       }
 
       if (count.current + chunk < coords.length) {
@@ -98,7 +103,10 @@ const RadialTS = function({options}) {
   return (
     <>
       <div className='headline'>{title}</div>
-      <h2 className='year'>{unit > 0 ? unit : ''}</h2>
+      <h2 className='display h' style={{justifyContent: showVal ? 'space-between' : 'center'}}>
+        <div>{unit.current > 0 ? unit.current : ''}</div>
+        {showVal && <div>{display}</div>}
+      </h2>
       <div className='radialContainer v' style={{transform: `scale(${resize})`}}>
         <div className='point circle' style={{top: center.y, left: center.x}}/>
         {renderPoints()}

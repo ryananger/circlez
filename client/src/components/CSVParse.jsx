@@ -14,36 +14,23 @@ const CSVParse = function() {
 
       split.map(function(line) {
         var entries = line.split(',');
-        var date = new Date();
+        var date = new Date(entries[0], entries[1] - 1, entries[2]);
 
-        if (!entries[0] || entries[0] === 'SPECIES') {
-          return;
-        }
+        var year = entries[0];
 
-        date.setYear(entries[2]);
-        date.setMonth(entries[3]);
-        date.setDate(entries[4]);
+        date.setYear(entries[0]);
+        date.setMonth(entries[1] - 1);
+        date.setDate(entries[2]);
 
-        if (!data[entries[0]]) {
-          data[entries[0]] = {};
-        }
-
-        if (!data[entries[0]][entries[2]]) {
-          data[entries[0]][entries[2]] = [];
+        if (!data[year]) {
+          data[year] = [];
 
           for (var j = 0; j < 365; j++) {
-            data[entries[0]][entries[2]][j] = 0;
+            data[year][j] = 0;
           }
         }
 
-        var dayCount = data[entries[0]][entries[2]][daysIntoYear(date)];
-
-        if (!dayCount) {
-          dayCount = 0;
-        }
-
-        data[entries[0]][entries[2]][daysIntoYear(date)] = dayCount + Number(entries[5]);
-
+        data[year][daysIntoYear(date) - 1] = Number(entries[4]);
       });
 
       console.log(data);
