@@ -1,6 +1,5 @@
 import React from 'react';
 
-import 'styles';
 import {helpers} from 'util';
 
 import Star from './Star.jsx';

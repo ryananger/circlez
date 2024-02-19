@@ -1,6 +1,5 @@
 import React, {useEffect, useState, useRef} from 'react';
 
-import 'styles';
 import st from 'ryscott-st';
 import {helpers} from 'util';
 
