@@ -1,21 +1,24 @@
 import React, {useEffect, useState, useRef} from 'react';
 
 const RadialTS = function({options}) {
+  const [coords, setCoords] = useState([]);
   const [points, setPoints] = useState([]);
   const [unit, setUnit] = useState(0);
   const count = useRef(0);
 
-  const data     = options.data;
-  const title    = options.title;
-  const unitName = options.unitName;
-  const center   = options.center || {x: window.innerWidth/2, y: window.innerHeight/2};
-  const skip     = options.skip || 1;
-  const chunk    = options.chunk || 1;
-  const yMin     = options.yMin || 0;
-  const scale    = options.scale || 200;
-  const opacity  = options.opacity;
-  const animated = options.animated;
-  const resize   = options.resize || 1;
+  const {
+    data,
+    title,
+    unitName,
+    opacity,
+    animated,
+    center = { x: window.innerWidth / 2, y: window.innerHeight / 2 },
+    skip   = 1,
+    chunk  = 1,
+    yMin   = 0,
+    scale  = 200,
+    resize = 1,
+  } = options;
 
   var calculateCoordinates = function(xData, xMax, yData, yMin) {
     const angle = (360 / xMax) * (xData);
@@ -26,23 +29,33 @@ const RadialTS = function({options}) {
     return {x: sigFigs(posx + center.x, 2), y: sigFigs(posy + center.y, 2)};
   };
 
-  var coords = [];
+  var getCoords = function() {
+    var coords = [];
 
-  for (var key in data) {
-    var cycle = data[key];
+    for (var key in data) {
+      var cycle = data[key];
 
-    cycle.map(function(entry, i) {
-      if (Math.floor(i/skip) === i/skip) {
-        entry && coords.push({year: Number(key), entry: calculateCoordinates(i/skip, Math.floor(cycle.length/skip), entry, yMin)});
-      }
-    });
-  }
+      cycle.map(function(entry, i) {
+        if (Math.floor(i/skip) === i/skip) {
+          entry && coords.push({year: Number(key), entry: calculateCoordinates(i/skip, Math.floor(cycle.length/skip), entry, yMin)});
+        }
+      });
+    }
+
+    setCoords(coords);
+  };
 
   var renderPoints = function() {
     var rendered = [];
 
     points.map(function(point, i) {
-      rendered.push(<div key={i} className='point circle' style={{top: point.entry.y, left: point.entry.x, opacity: opacity ? sigFigs((i + 1)/(points.length), 2) : 1}}/>);
+      let style = {
+        top: point.entry.y,
+        left: point.entry.x,
+        opacity: opacity ? sigFigs((i + 1)/(points.length), 2) : 1
+      };
+
+      rendered.push(<div key={i} className='point circle' style={style}/>);
     });
 
     return rendered;
@@ -71,7 +84,8 @@ const RadialTS = function({options}) {
     }
   };
 
-  useEffect(animate, []);
+  useEffect(getCoords, []);
+  useEffect(animate, [coords]);
 
   return (
     <>
