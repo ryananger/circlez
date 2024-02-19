@@ -1,7 +1,7 @@
 import React, {useEffect, useState, useRef} from 'react';
 
 import {helpers} from 'util';
-import temp_data from './temp_data.js';
+import temp_data from './temp_data2.js';
 
 const Circle = function() {
   const center = {x: window.innerWidth/2, y: window.innerHeight/2};
@@ -15,7 +15,7 @@ const Circle = function() {
     const posx = radius * Math.cos((angle * Math.PI) / 180);
     const posy = radius * Math.sin((angle * Math.PI) / 180);
 
-    return {x: helpers.sigFigs(posx + center.x, 1), y: helpers.sigFigs(posy + center.y, 1)};
+    return {x: helpers.sigFigs(posx + center.x, 2), y: helpers.sigFigs(posy + center.y, 2)};
   };
 
   var coords = [];
@@ -23,20 +23,22 @@ const Circle = function() {
   for (var key in temp_data) {
     var yr = temp_data[key];
 
-    yr.map(function(entry, i) {
-      var mod = 2;
+    if (Number(key) > 1981) {
+      yr.map(function(entry, i) {
+        var mod = 4;
 
-      if (Math.floor(i/mod) === i/mod) {
-        entry && coords.push({year: Number(key), entry: calculateCoordinates(i/mod, yr.length/mod, entry, 19.5)});
-      }
-    });
+        if (Math.floor(i/mod) === i/mod) {
+          entry && coords.push({year: Number(key), entry: calculateCoordinates(i/mod, yr.length/mod, entry, 10, 50)});
+        }
+      });
+    }
   }
 
   var renderPoints = function() {
     var rendered = [];
 
     points.map(function(point, i) {
-      rendered.push(<div key={i} className='point circle' style={{top: point.entry.y, left: point.entry.x, opacity: helpers.sigFigs((i + 1)/(points.length), 1)}}/>);
+      rendered.push(<div key={i} className='point circle' style={{top: point.entry.y, left: point.entry.x, opacity: helpers.sigFigs((i + 1)/(points.length), 2)}}/>);
     });
 
     return rendered;
@@ -63,6 +65,7 @@ const Circle = function() {
     <>
       <div className='headline'>Daily Sea Surface Temperature, World</div>
       <h2 className='year'>{year}</h2>
+
       <div className='point circle' style={{top: center.y, left: center.x}}/>
       {renderPoints()}
     </>

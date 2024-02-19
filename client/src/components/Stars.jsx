@@ -9,7 +9,7 @@ const Stars = function() {
 
   var renderStars = function() {
     var rendered = [];
-    var num = winX >= 1100 ? 150 : 50;
+    var num = 50;
 
     for (var i = 0; i < num; i++) {
       var min = 1;

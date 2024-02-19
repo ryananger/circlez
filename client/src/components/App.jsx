@@ -1,23 +1,45 @@
-import React, {useEffect, useState} from 'react';
+import React, {useState} from 'react';
 
 import 'styles';
-import st from 'ryscott-st';
-import {helpers} from 'util';
-
-import Stars from './Stars.jsx';
-import Circle from './Circle.jsx';
+import t1 from './temp_data.js';
+import t2 from './temp_data2.js';
+import RadialTS from './RadialTS.jsx';
 
 const App = function() {
-  const center = {x: window.innerWidth/2, y: window.innerHeight/2};
+  const [options, setOptions] = useState('dsst');
 
-  st.mobile = window.innerWidth < 1100;
-  st.landscape = st.mobile && window.innerWidth > window.innerHeight;
+  const dsst = {
+    data: t1,
+    yMin: 19.5,
+    title: 'Daily Sea Surface Temperature, World',
+    unitName: 'year',
+    skip: 2,
+    chunk: 60,
+    opacity: true,
+    animated: true,
+    scale: 200
+  };
 
-  st.center = center;
+  const dast = {
+    data: t2,
+    yMin: 11,
+    title: 'Daily Surface Air Temperature, World',
+    unitName: 'year',
+    skip: 4,
+    chunk: 180,
+    opacity: true,
+    animated: true,
+    scale: 60
+  };
 
   return (
     <div className='app v'>
-      <Stars />
+      {options === 'dsst' && <RadialTS options={{...dsst}}/>}
+      {options === 'dast' && <RadialTS options={{...dast}}/>}
+      <div className='nav'>
+        <div onClick={()=>{setOptions('dsst')}}>DSST, World</div>
+        <div onClick={()=>{setOptions('dast')}}>DAST, World</div>
+      </div>
     </div>
   );
 };
