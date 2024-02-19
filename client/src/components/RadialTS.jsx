@@ -12,6 +12,7 @@ const RadialTS = function({options}) {
     unitName,
     opacity,
     animated,
+    throttle,
     center = { x: window.innerWidth / 2, y: window.innerHeight / 2 },
     skip   = 1,
     chunk  = 1,
@@ -80,7 +81,14 @@ const RadialTS = function({options}) {
         count.current += coords.length - count.current - 1;
       }
 
-      requestAnimationFrame(animate);
+      if (throttle) {
+        setTimeout(function() {
+          requestAnimationFrame(animate);
+        }, throttle);
+      } else {
+        requestAnimationFrame(animate);
+      }
+
     }
   };
 

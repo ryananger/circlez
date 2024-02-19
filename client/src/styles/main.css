@@ -37,6 +37,12 @@
   font-size: 14px;
 }
 
+#csvFile {
+  position: fixed;
+  bottom: 1vh;
+  left: 1vh;
+}
+
 .nav * {
   cursor: pointer;
 }
