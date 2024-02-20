@@ -1,9 +1,12 @@
 import React, {useEffect, useState, useRef} from 'react';
 
+import st from 'ryscott-st';
+
 const RadialTS = function({options}) {
   const [coords, setCoords] = useState([]);
   const [points, setPoints] = useState([]);
   const [display, setDisplay] = useState('');
+  const yMax = useRef(0);
   const unit = useRef(0);
   const count = useRef(0);
 
@@ -23,7 +26,7 @@ const RadialTS = function({options}) {
     resize = 1,
   } = options;
 
-  var calculateCoordinates = function(xData, xMax, yData, yMin) {
+  var calculateCoordinates = function(xData, xMax, yData, yMin, scale) {
     const angle = (360 / xMax) * (xData);
     const radius = (yData - yMin) * scale;
     const posx = radius * Math.cos((angle * Math.PI) / 180);
@@ -34,13 +37,28 @@ const RadialTS = function({options}) {
 
   var getCoords = function() {
     var coords = [];
+    var space, ratio;
+
+    for (var key in data) {
+      var cycle = data[key];
+
+      cycle.map(function(entry) {
+        if (entry > yMax.current) {
+          yMax.current = entry;
+          space = yMax.current - yMin;
+          ratio = st.landscape ? (window.innerHeight/space/2)*0.9 : window.innerWidth/space/2*0.9;
+        }
+      });
+    }
+
+    console.log(space, ratio);
 
     for (var key in data) {
       var cycle = data[key];
 
       cycle.map(function(entry, i) {
         if (Math.floor(i/skip) === i/skip) {
-          entry && coords.push({year: Number(key), value: entry, entry: calculateCoordinates(i/skip, Math.floor(cycle.length/skip), entry, yMin)});
+          entry && coords.push({year: Number(key), value: entry, entry: calculateCoordinates(i/skip, Math.floor(cycle.length/skip), entry, yMin, st.mobile ? ratio : scale)});
         }
       });
     }

@@ -1,6 +1,11 @@
+:root {
+  --bg: rgb(24, 21, 23);
+  --color1: #ffeca4;
+}
+
 html {
   overscroll-behavior: contain;
-  background: #201719;
+  background: var(--bg);
   overflow-x: hidden;
   overflow-y: hidden;
   -webkit-overflow-scrolling: touch;
@@ -25,7 +30,7 @@ body, #root {
   max-width: 100svw;
   min-height: 100svh;
 
-  color: #ffdfb9;
+  color: var(--color1);
   overflow: hidden;
 }
 

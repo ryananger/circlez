@@ -14,7 +14,7 @@
 .point {
  position: fixed;
  width: 2px;
- background-color: #ffdfb9;
+ background-color: var(--color1);
 }
 
 .display,
@@ -24,7 +24,8 @@
 
 .display {
   top: 4vh;
-  width: 240px;
+  width: 40svw;
+  max-width: 400px;
   justify-content: space-between;
 }
 
@@ -33,6 +34,8 @@
 }
 
 .nav {
+  display: flex;
+  flex-direction: column;
   position: fixed;
   top: 1vh;
   left: 1vh;
@@ -53,4 +56,56 @@
 .radialContainer {
   width: 100%;
   height: 100%;
+}
+
+@media (max-width: 1024px) {
+  .nav {
+    left: 0;
+    bottom: 1vh;
+    top: unset;
+    width: 100%;
+    flex-direction: row;
+    font-size: 2.4vh;
+    justify-content: space-around;
+    padding: 0 1vh;
+    box-sizing: border-box;
+  }
+
+  .headline {
+    font-size: 2.2vh;
+  }
+
+  .display {
+    font-size: 3vh;
+  }
+}
+
+@media (orientation: landscape) and (max-width: 1024px) {
+  .nav {
+    left: 2vh;
+    bottom: unset;
+    flex-direction: column;
+    height: 100%;
+    font-size: 1.6em;
+  }
+
+  .display,
+  .headline {
+    flex-direction: column;
+    left: unset;
+    right: 2vh;
+    align-items: end;
+  }
+
+  .display {
+    top: 4vh;
+  }
+
+  .headline {
+    font-size: 2.2em;
+  }
+
+  .display {
+    font-size: 3em;
+  }
 }
