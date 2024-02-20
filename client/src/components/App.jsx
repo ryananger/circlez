@@ -1,6 +1,5 @@
 import React, {useState} from 'react';
 
-import st from 'ryscott-st';
 import 'styles';
 import t1 from './temp_data.js';
 import t2 from './temp_data2.js';
@@ -11,9 +10,6 @@ import CSVParse from './CSVParse.jsx';
 
 const App = function() {
   const [options, setOptions] = useState('dsst');
-
-  st.mobile = window.innerWidth < 1024;
-  st.landscape = st.mobile && window.innerWidth > window.innerHeight;
 
   return (
     <div className='app v'>

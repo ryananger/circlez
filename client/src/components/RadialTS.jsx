@@ -1,7 +1,5 @@
 import React, {useEffect, useState, useRef} from 'react';
 
-import st from 'ryscott-st';
-
 const RadialTS = function({options}) {
   const [coords, setCoords] = useState([]);
   const [points, setPoints] = useState([]);
@@ -9,6 +7,8 @@ const RadialTS = function({options}) {
   const yMax = useRef(0);
   const unit = useRef(0);
   const count = useRef(0);
+  const mobile = window.innerWidth < 1024;
+  const landscape = mobile && window.innerHeight < window.innerWidth;
 
   const {
     data,
@@ -18,7 +18,7 @@ const RadialTS = function({options}) {
     animated,
     throttle,
     showVal,
-    center = { x: window.innerWidth / 2, y: window.innerHeight / 2 },
+    center = {x: window.innerWidth / 2, y: window.innerHeight / 2},
     skip   = 1,
     chunk  = 1,
     yMin   = 0,
@@ -37,28 +37,29 @@ const RadialTS = function({options}) {
 
   var getCoords = function() {
     var coords = [];
-    var space, ratio;
+    var ratio = scale;
+    var space;
 
-    for (var key in data) {
-      var cycle = data[key];
+    if (mobile) {
+      for (var key in data) {
+        var cycle = data[key];
 
-      cycle.map(function(entry) {
-        if (entry > yMax.current) {
-          yMax.current = entry;
-          space = yMax.current - yMin;
-          ratio = st.landscape ? (window.innerHeight/space/2)*0.9 : window.innerWidth/space/2*0.9;
-        }
-      });
+        cycle.map(function(entry) {
+          if (entry > yMax.current) {
+            yMax.current = entry;
+            space = yMax.current - yMin;
+            ratio = landscape ? (window.innerHeight/space/2)*0.9 : window.innerWidth/space/2*0.9;
+          }
+        });
+      }
     }
-
-    console.log(space, ratio);
 
     for (var key in data) {
       var cycle = data[key];
 
       cycle.map(function(entry, i) {
         if (Math.floor(i/skip) === i/skip) {
-          entry && coords.push({year: Number(key), value: entry, entry: calculateCoordinates(i/skip, Math.floor(cycle.length/skip), entry, yMin, st.mobile ? ratio : scale)});
+          entry && coords.push({year: Number(key), value: entry, entry: calculateCoordinates(i/skip, Math.floor(cycle.length/skip), entry, yMin, ratio)});
         }
       });
     }
@@ -116,7 +117,9 @@ const RadialTS = function({options}) {
   };
 
   useEffect(getCoords, []);
-  useEffect(animate, [coords]);
+  useEffect(()=>{
+    setTimeout(animate, 1000);
+  }, [coords]);
 
   return (
     <>
