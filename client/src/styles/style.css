@@ -1,10 +1,11 @@
 :root {
-  --bg: rgb(24, 21, 23);
-  --color1: #ffeca4;
+  --bg: #fff9e9;
+  --color1: #f24c40;
+  --color2: #ffdd81;
 }
 
 html {
-  overscroll-behavior: contain;
+  /* overscroll-behavior: contain; */
   background: var(--bg);
   overflow-x: hidden;
   overflow-y: hidden;
@@ -19,7 +20,7 @@ body, #root {
   margin: 0;
   width: 100%;
   min-height: 100svh;
-  font-family: Saira;
+  font-family: Poppins;
   font-size: 2vh;
 }
 

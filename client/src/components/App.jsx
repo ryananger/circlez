@@ -18,10 +18,10 @@ const App = function() {
       {options === 'butterfly' && <RadialTS options={butterfly}/>}
       {options === 'co2' && <RadialTS options={co2}/>}
       <div className='nav'>
-        <div onClick={()=>{setOptions('dsst')}}>DSST</div>
-        <div onClick={()=>{setOptions('dsat')}}>DSAT</div>
-        <div onClick={()=>{setOptions('co2')}}>CO2</div>
-        <div onClick={()=>{setOptions('butterfly')}}>Butterflies</div>
+        <div className='navItem' onClick={()=>{setOptions('dsst')}}>DSST</div>
+        <div className='navItem' onClick={()=>{setOptions('dsat')}}>DSAT</div>
+        <div className='navItem' onClick={()=>{setOptions('co2')}}>CO2</div>
+        <div className='navItem' onClick={()=>{setOptions('butterfly')}}>Butterflies</div>
       </div>
       {/* <CSVParse /> */}
     </div>
@@ -32,6 +32,7 @@ const dsst = {
   data: t1,
   yMin: 19.5,
   title: 'Daily Sea Surface Temperature, World',
+  source: 'https://www.ncei.noaa.gov/products/optimum-interpolation-sst',
   unitName: 'year',
   skip: 2,
   chunk: 45,
@@ -45,6 +46,7 @@ const dsat = {
   data: t2,
   yMin: 11,
   title: 'Daily Surface Air Temperature, World',
+  source: 'https://cds.climate.copernicus.eu/cdsapp#!/dataset/reanalysis-era5-single-levels?tab=overview',
   unitName: 'year',
   skip: 4,
   chunk: 45,
@@ -57,6 +59,7 @@ const butterfly = {
   data: t3['Pyronia tithonus'],
   yMin: 10,
   title: 'Pyronia tithonus, Observed',
+  source: 'https://www.kaggle.com/datasets/thedevastator/regional-gam-species-counts',
   unitName: 'year',
   skip: 1,
   chunk: 1,
@@ -70,6 +73,7 @@ const co2 = {
   data: t4,
   yMin: 320,
   title: 'CO2 ppm',
+  source: 'https://gml.noaa.gov/webdata/ccgg/trends/co2/co2_daily_mlo.txt',
   unitName: 'year',
   skip: 2,
   chunk: 60,

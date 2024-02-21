@@ -7,7 +7,7 @@
 }
 
 .grow:hover {
-  transform: scale(1.6, 1.6);
+  transform: scale(1.4);
 }
 
 @keyframes beat {

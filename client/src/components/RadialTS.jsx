@@ -1,4 +1,6 @@
 import React, {useEffect, useState, useRef} from 'react';
+import {IoIosInformationCircle as InfoIcon} from 'react-icons/io';
+
 
 const RadialTS = function({options}) {
   const [coords, setCoords] = useState([]);
@@ -13,6 +15,7 @@ const RadialTS = function({options}) {
   const {
     data,
     title,
+    source,
     unitName,
     opacity,
     animated,
@@ -41,8 +44,8 @@ const RadialTS = function({options}) {
     var space;
 
     if (mobile) {
-      for (var key in data) {
-        var cycle = data[key];
+      for (let key in data) {
+        let cycle = data[key];
 
         cycle.map(function(entry) {
           if (entry > yMax.current) {
@@ -54,8 +57,8 @@ const RadialTS = function({options}) {
       }
     }
 
-    for (var key in data) {
-      var cycle = data[key];
+    for (let key in data) {
+      let cycle = data[key];
 
       cycle.map(function(entry, i) {
         if (Math.floor(i/skip) === i/skip) {
@@ -112,7 +115,6 @@ const RadialTS = function({options}) {
       } else {
         requestAnimationFrame(animate);
       }
-
     }
   };
 
@@ -123,7 +125,7 @@ const RadialTS = function({options}) {
 
   return (
     <>
-      <div className='headline'>{title}</div>
+      <div className='headline'>{title} <InfoIcon className='icon grow' onClick={()=>{window.open(source, '_blank')}}/></div>
       <h2 className='display h' style={{justifyContent: showVal ? 'space-between' : 'center'}}>
         <div>{unit.current > 0 ? unit.current : ''}</div>
         {showVal && <div>{display}</div>}
